@@ -1,5 +1,20 @@
 import { NodeTypeDefinition } from '@/types'; // Adjust path if necessary
-// import { Variable, Brain, GitCompareArrows, ToggleRight } from 'lucide-react'; // Example icons
+import { 
+  Variable, Brain, GitCompareArrows, ToggleRight,
+  MousePointerClick, Timer, Combine, FileText, Shuffle, MonitorPlay 
+} from 'lucide-react'; // Example icons
+import {
+  VariableNodeProperties,
+  AiNodeProperties,
+  IfStatementNodeProperties,
+  OutputNodeProperties,
+  DelayNodeProperties,
+  LoggerNodeProperties,
+  RandomNodeProperties,   // Added
+  ButtonNodeProperties,   // Added
+  SwitchNodeProperties,   // Added
+  MergeNodeProperties,    // Added
+} from '@/components/editor/properties'; // Use barrel file import
 
 export const nodeRegistry: NodeTypeDefinition[] = [
   // 1. Variable Node
@@ -8,7 +23,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'Variable',
     description: 'Stores and outputs a configurable value.',
     category: 'Input',
-    // icon: Variable,
+    icon: Variable,
     inputs: [
       { name: 'inputValue', type: 'any', label: 'Set Value' },
     ],
@@ -20,7 +35,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
       value: '',        // Actual value (string, number, boolean)
       valueType: 'string', // 'string', 'number', 'boolean' (for Right Sidebar editor)
     },
-    // customPropertiesComponent: VariableNodeProperties (to be created later)
+    customPropertiesComponent: VariableNodeProperties,
   },
 
   // 2. If Statement Node
@@ -29,7 +44,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'If Statement',
     description: 'Compares two inputs and triggers true/false output.',
     category: 'Logic',
-    // icon: GitCompareArrows,
+    icon: GitCompareArrows,
     inputs: [
       { name: 'var1', type: 'any', label: 'Operand A' },
       { name: 'var2', type: 'any', label: 'Operand B' },
@@ -42,7 +57,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
       operator: '===', // e.g., '===', '!=', '>', '<', '>=', '<=', 'contains', 'startsWith', 'endsWith'
       // We'll need a way to edit this operator in the Right Sidebar
     },
-    // customPropertiesComponent: IfStatementNodeProperties (to be created later)
+    customPropertiesComponent: IfStatementNodeProperties,
   },
 
   // 3. AI Node
@@ -51,7 +66,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'AI Task',
     description: 'Performs an AI task with a given prompt.',
     category: 'AI', // Corrected category
-    // icon: Brain,
+    icon: Brain,
     inputs: [
       { name: 'prompt', type: 'string', label: 'Prompt' },
       { name: 'systemPrompt', type: 'string', label: 'System Prompt (Optional)' },
@@ -68,7 +83,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
       // Mock response for now, actual logic will be in workflow execution
       mockResponse: 'This is a mock AI response.',
     },
-    // customPropertiesComponent: AiNodeProperties (to be created later)
+    customPropertiesComponent: AiNodeProperties,
   },
 
   // 4. Switch Node
@@ -77,7 +92,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'Switch',
     description: 'Passes data through only if its status is "on".',
     category: 'Logic',
-    // icon: ToggleRight,
+    icon: ToggleRight,
     inputs: [
       { name: 'dataIn', type: 'any', label: 'Input Data' },
       { name: 'status', type: 'boolean', label: 'Status (On/Off)' }, // true for on, false for off
@@ -89,7 +104,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
       // The switch's behavior is primarily controlled by the 'status' input.
       // No specific internal data needed for its core logic for now.
     },
-    // customPropertiesComponent: SwitchNodeProperties (to be created later)
+    customPropertiesComponent: SwitchNodeProperties,
   },
 
   // 5. Button Node
@@ -98,7 +113,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'Button',
     description: 'Triggers the flow when clicked.',
     category: 'Input',
-    // icon: Button,
+    icon: MousePointerClick,
     inputs: [], // No standard data inputs, it's a manual trigger
     outputs: [
       { name: 'trigger', type: 'signal', label: 'Trigger' },
@@ -106,7 +121,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     defaultData: {
       buttonText: 'Start Flow',
     },
-    // customPropertiesComponent: ButtonNodeProperties (to be created later)
+    customPropertiesComponent: ButtonNodeProperties,
   },
 
   // 6. Delay Node
@@ -115,7 +130,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'Delay',
     description: 'Adds a specified delay before passing a signal.',
     category: 'Utility', // Changed to Utility based on common practice
-    // icon: Timer,
+    icon: Timer,
     inputs: [
       { name: 'signalIn', type: 'signal', label: 'Start Delay' },
     ],
@@ -125,7 +140,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     defaultData: {
       delayMs: 1000, // Default delay of 1 second
     },
-    // customPropertiesComponent: DelayNodeProperties (to be created later)
+    customPropertiesComponent: DelayNodeProperties,
   },
 
   // 7. Merge Node
@@ -134,7 +149,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'Merge',
     description: 'Merges two data streams into one.',
     category: 'Transform', // Changed to Transform based on common practice
-    // icon: Combine,
+    icon: Combine,
     inputs: [
       { name: 'stream1', type: 'any', label: 'Stream 1' },
       { name: 'stream2', type: 'any', label: 'Stream 2' },
@@ -145,7 +160,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     defaultData: {
       // mergeStrategy: 'array_append' // Future: 'object_assign', etc.
     },
-    // customPropertiesComponent: MergeNodeProperties (to be created later)
+    customPropertiesComponent: MergeNodeProperties,
   },
 
   // 8. Logger Node
@@ -154,7 +169,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'Logger',
     description: 'Logs incoming data to the console.',
     category: 'Output',
-    // icon: FileText,
+    icon: FileText,
     inputs: [
       { name: 'logData', type: 'any', label: 'Data to Log' },
     ],
@@ -163,7 +178,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
       logLevel: 'info', // 'info', 'warn', 'error'
       logLabel: 'Log', // Custom label for the log message
     },
-    // customPropertiesComponent: LoggerNodeProperties (to be created later)
+    customPropertiesComponent: LoggerNodeProperties,
   },
 
   // 9. Random Node
@@ -172,7 +187,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'Random Number',
     description: 'Outputs a random number within a specified range.',
     category: 'Input', // Can act as an input or be triggered
-    // icon: Shuffle,
+    icon: Shuffle,
     inputs: [ // Optional trigger to re-generate
       { name: 'trigger', type: 'signal', label: 'Regenerate (Optional)'}
     ],
@@ -183,7 +198,7 @@ export const nodeRegistry: NodeTypeDefinition[] = [
       min: 0,
       max: 100,
     },
-    // customPropertiesComponent: RandomNodeProperties (to be created later)
+    customPropertiesComponent: RandomNodeProperties,
   },
 
   // 10. Output Node
@@ -192,16 +207,17 @@ export const nodeRegistry: NodeTypeDefinition[] = [
     label: 'Output Display',
     description: 'Renders incoming content (HTML, Markdown, Image, Text).',
     category: 'Output',
-    // icon: MonitorPlay,
+    icon: MonitorPlay,
     inputs: [
       { name: 'content', type: 'any', label: 'Content' },
     ],
     outputs: [], // No data output, renders content
     defaultData: {
       renderType: 'text', // 'html', 'markdown', 'image_url', 'text', 'json'
+      mockContent: '', // Added mockContent
       // Content is received via input, no default content needed here usually
     },
-    // customPropertiesComponent: OutputNodeProperties (to be created later)
+    customPropertiesComponent: OutputNodeProperties,
   }
 ];
 

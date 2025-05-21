@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Model } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
+import { LocalStorageService } from '@/lib/services/storageService'; // Import LocalStorageService
 
 interface ModelsState {
   models: Model[];
@@ -45,7 +46,7 @@ export const useModelsStore = create<ModelsState>()(
     }),
     {
       name: 'starflow-models-storage', // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+      storage: createJSONStorage(() => new LocalStorageService()), // Use the new service
     }
   )
 );

@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { Flow } from '@/types'; // Adjust path if necessary
 import { v4 as uuidv4 } from 'uuid';
 import { ReactFlowJsonObject } from 'reactflow'; // Ensure this is correctly imported
+import { LocalStorageService } from '@/lib/services/storageService'; // Import LocalStorageService
 
 interface FlowsState {
   flows: Flow[];
@@ -60,7 +61,7 @@ export const useFlowsStore = create<FlowsState>()(
     }),
     {
       name: 'starflow-flows-storage',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => new LocalStorageService()), // Use the new service
     }
   )
 );

@@ -39,8 +39,16 @@ export interface NodeTypeDefinition {
   inputs: NodeSocket[];
   outputs: NodeSocket[];
   defaultData?: Record<string, any>; // Default values for any custom data fields the node might have
+  icon?: React.FC<any>; // Optional icon for the node
   // Optional: custom rendering component for this specific node type if BaseNode is not sufficient
-  // customComponent?: React.ComponentType<NodeProps<CustomNodeData>>; 
+  // customComponent?: React.ComponentType<NodeProps<CustomNodeData>>;
+  customPropertiesComponent?: React.FC<NodePropertiesProps<any>>; // Optional custom properties editor
+}
+
+export interface NodePropertiesProps<T> {
+  nodeId: string;
+  data: T;
+  onChange: (newData: Partial<T>) => void;
 }
 
 // Data structure for custom nodes in ReactFlow
